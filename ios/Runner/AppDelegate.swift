@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 
+/// Main application delegate class that handles app lifecycle and Flutter integration
 @main
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
@@ -9,16 +10,21 @@ import UIKit
   ) -> Bool {
 
     let controller: FlutterViewController = window?.rootViewController as! FlutterViewController
-    // Channel to update app icon
+    // Channel to update app icon - Communication bridge between Flutter and iOS
     let appIconChannel = FlutterMethodChannel(
       name: "dynamic_icon_changer", binaryMessenger: controller.binaryMessenger)
 
     appIconChannel.setMethodCallHandler({
       [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
-      if call.method == "updateIcon" {
-        // Function to make the change
+      // Handle different method calls from Flutter
+      switch call.method {
+      case "updateIcon":
+        // Change the app icon
         self?.changeAppIcon(call: call, result: result)
-      } else {
+      case "getCurrentIcon":
+        // Get the current app icon name
+        self?.getCurrentIcon(result: result)
+      default:
         result(FlutterMethodNotImplemented)
         return
       }
@@ -28,6 +34,10 @@ import UIKit
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
+  /// Changes the app icon based on the provided icon name
+  /// - Parameters:
+  ///   - call: Flutter method call containing the icon name
+  ///   - result: Callback to return the result to Flutter
   private func changeAppIcon(call: FlutterMethodCall, result: @escaping FlutterResult) {
     // Only work on iOS > 10.3
     if #available(iOS 10.3, *) {
@@ -77,7 +87,22 @@ import UIKit
     }
   }
 
-  // Helper function to validate if the icon name exists
+  /// Gets the current app icon name
+  /// - Parameter result: Callback to return the result to Flutter
+  private func getCurrentIcon(result: @escaping FlutterResult) {
+    if #available(iOS 10.3, *) {
+      // Get the current icon name, if nil it means the default icon is being used
+      let currentIcon = UIApplication.shared.alternateIconName ?? "Default"
+      result(currentIcon)
+    } else {
+      // For older iOS versions, always return Default
+      result("Default")
+    }
+  }
+
+  /// Helper function to validate if the icon name exists
+  /// - Parameter iconName: Name of the icon to validate
+  /// - Returns: Boolean indicating if the icon name is valid
   private func isValidIconName(_ iconName: String) -> Bool {
     let validIcons = ["Red", "Purple", "Default"]  // Add your icon names here
     return validIcons.contains(iconName)
