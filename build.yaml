@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      magic_app_icon|app_icons:
+        enabled: true
+
+builders:
+  app_icons:
+    import: "package:magic_app_icon/src/builders/app_icons_builder.dart"
+    builder_factories: ["appIconsBuilder"]
+    build_extensions: { ".dart": [".g.dart"] }
+    build_to: source
+    auto_apply: dependents
+    defaults:
+      generate_for:
+        - lib/app_icons.dart
+      options:
+        output_dir: lib

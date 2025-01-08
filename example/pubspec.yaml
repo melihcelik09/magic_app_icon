@@ -1,0 +1,32 @@
+name: magic_app_icon_example
+description: "Demonstrates how to use the magic_app_icon plugin."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  magic_app_icon:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+
+magic_app_icon:
+  default_icon: "assets/icons/default.png"
+  alternate_icons:
+    red: "assets/icons/red.png"
+    purple: "assets/icons/purple.png"

@@ -1,22 +1,40 @@
 name: magic_app_icon
-description: "A new Flutter project."
-publish_to: "none"
-version: 0.1.0
+description: A Flutter package to dynamically change app icons on iOS and Android platforms with automatic icon generation.
+version: 0.0.1
+homepage: https://github.com/yourusername/magic_app_icon
 
 environment:
-  sdk: ^3.5.3
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  package_info_plus: ^8.1.2
+  plugin_platform_interface: ^2.0.2
+  args: ^2.4.2
+  yaml: ^3.1.2
+  path: ^1.8.3
+  logging: ^1.2.0
+  image: ^4.0.17
+  build: ^2.4.1
+  source_gen: ^1.4.0
+  xml: ^6.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+  build_config: ^1.1.1
 
 flutter:
-  uses-material-design: true
-  assets:
-    - assets/images/
+  plugin:
+    platforms:
+      android:
+        package: com.example.magic_app_icon
+        pluginClass: MagicAppIconPlugin
+      ios:
+        pluginClass: MagicAppIconPlugin
+
+executables:
+  magic_app_icon: magic_app_icon
